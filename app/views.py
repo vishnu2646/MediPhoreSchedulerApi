@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from .models import *
 from .serializer import *
+from .services import *
 
 # Create your views here.
 class ProjectView(APIView):
@@ -49,6 +50,20 @@ class TaskDetailsView(APIView):
             serializer.save()
             return Response({"data": "Task has been closed"})
         return Response({"data": "Failed to close task"})
+
+class AssignTaskView(APIView):
+    def post(self, request, task_id):
+        resource_id = request.data.get('resource_id')
+
+        if not task_id or not resource_id:
+            return Response({"data": "Task or Resource id's are missing"})
+
+        try:
+            task = assign_resource_to_task(task_id=task_id, resource_id=resource_id)
+            serializer = TaskSerializer(task)
+            return Response({"data": serializer.data})
+        except Exception as e:
+            return Response({'data': e.detail[0]})
 
 class MatchedResourceView(APIView):
     def get(self, request):

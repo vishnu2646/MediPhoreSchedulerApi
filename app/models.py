@@ -56,6 +56,10 @@ class Task(BaseModel):
     end_date = models.DateField(null=False)
     skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='tasks')
     project = models.ForeignKey(Project, related_name='project_skills', on_delete=models.CASCADE)
+    assigned_resource = models.ForeignKey(Resource, on_delete=models.SET_NULL, related_name='tasks', null=True, blank=True)
 
     def __str__(self):
         return self.title
+
+    def can_be_assigned_to(self, resource):
+        return self.skill in resource.skills.all()

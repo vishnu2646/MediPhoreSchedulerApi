@@ -24,6 +24,16 @@ class ResourceSerializer(serializers.ModelSerializer):
         model = Resource
         fields = '__all__'
 
+    def __init__(self, *args, **kwargs):
+        fields = kwargs.pop('fields', None)
+        super().__init__(*args, **kwargs)
+
+        if fields is not None:
+            allowed = set(fields)
+            existing = set(self.fields)
+            for field_name in existing - allowed:
+                self.fields.pop(field_name)
+
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
@@ -42,6 +52,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class TaskSerializer(serializers.ModelSerializer):
     project = ProjectSerializer(fields=['id', 'name'], read_only=True)
     skill = SkillSerializer(read_only=True)
+    assigned_resource = ResourceSerializer(fields=['id', 'name'], read_only=True)
 
     class Meta:
         model = Task
