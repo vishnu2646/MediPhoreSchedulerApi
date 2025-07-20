@@ -1,4 +1,4 @@
-# Mediphore Task Management API
+# Mediphore Resource Management API
 
 This project is a Django REST API for managing projects, tasks, resources, and skills. It is designed to help teams assign resources to tasks based on required skills and track project progress.
 
