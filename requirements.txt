@@ -1,0 +1,6 @@
+Django==3.2
+django-cors-headers==3.11.0
+djangorestframework==3.13.1
+python
+whitenoise==6.6.0
+python==3.11.0
