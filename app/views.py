@@ -45,6 +45,11 @@ class TaskDetailsView(APIView):
         except Task.DoesNotExist:
             return Response({"data": "Task does not exists"})
 
+        # Set resource status to available, if there is an assigned resource
+        if task.assigned_resource:
+            task.assigned_resource.current_status = RESOURCE_STATUS_AVAILABLE
+            task.assigned_resource.save()
+
         serializer = TaskSerializer(instance=task, data=request.data)
         if serializer.is_valid():
             serializer.save()

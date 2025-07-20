@@ -20,6 +20,7 @@ def assign_resource_to_task(task_id, resource_id):
             raise ValidationError("Resource does not have enough required skills.")
 
         task.assigned_resource = resource
+        task.status = TASK_INPROGRESS
         task.save()
 
         resource.current_status = RESOURCE_STATUS_BUSY
